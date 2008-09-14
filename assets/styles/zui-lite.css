@@ -1,0 +1,54 @@
+body, html
+{
+	background-color: rgb(128, 128, 128);
+	font-family: helvetica, arial, sans-serif;
+	font-size: 100%;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+#zui
+{
+	color: rgb(25,25,25);
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	z-index: 100;
+}
+
+#zui .padding
+{
+	padding: 6%;
+}
+
+#zui #zuiLinks
+{
+	cursor: pointer;
+	font-size: 4em;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 50%;
+}
+
+#zui #zuiContent
+{
+	background-color: rgb(255, 255, 255);
+	font-size: 1.3em;
+	height: 100%;
+	line-height: 1.55em;
+	right: 0;
+	overflow: auto;
+	position: absolute;
+	text-align: left;
+	top: 0;
+	width: 50%;
+}
+
+#zui #zuiContent .padding
+{
+	padding: 3%;
+}

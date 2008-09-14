@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>MooZUI - by Hans Oksendahl</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+	<script type="text/javascript" src="assets/scripts/mootools-1.2-core.js"></script>
+	<script type="text/javascript" src="assets/scripts/mootools-1.2-more-color.js"></script>
+	<script type="text/javascript" src="assets/scripts/historymanager.js"></script>
+	<script type="text/javascript" src="assets/scripts/zui-lite.js"></script>
+	<link href="assets/styles/zui-lite.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript">
+	
+// This is a fake ZUI node database do not include this in your own projects
+ZUI.implement({
+
+	// just for fun pretend this is a database
+	'fakeNodes': [
+		{
+			'id': 1,
+			'title': 'Hey there!',
+			'content': 'This is neat',
+			'links': [
+				{'id': 2, 'title': 'Huh?'},
+				{'id': 3, 'title': 'What is this?', 'links': [{'id': 4, 'title': 'Who?'}]},
+				{'id': 4, 'title': 'Who?'}
+			]
+		},
+		{
+			'id': 2,
+			'title': 'Huh?',
+			'content': 'It\'s a ZUI.'
+		},
+		{
+			'id': 3,
+			'title': 'What is this?',
+			'content': 'It\'s a Javascript ZUI. Made by this one guy.',
+			'links': [{'id': 4, 'title': 'Who?'}]
+		},
+		{
+			'id': 4,
+			'title': 'Who?',
+			'content': 'Made by <a href="mailto:hansoksendahl@gmail.com">Hans Oksendahl</a><br/><br/><a href="http://thisisne.at">Thisisne.at</a>'
+		}
+	],
+
+	// pretend this is the onComplete function called from ZUI.remote.getContent
+	'remote': {
+
+		'getContent': function(intId)
+		{
+			objJson = $unlink( this.fakeNodes[intId - 1] );
+
+			this.interface.links().empty().adopt(this.interface.padding(objJson.title));
+			this.interface.content().empty().adopt(this.interface.padding(objJson.content));
+			this.interface.links().set('node', objJson.id);
+
+			this.interface.links().removeEvents( 'click' );
+			// set the click event for the top container node
+			this.interface.links().addEvents({
+				'click': function()
+				{
+					if(this.breadcrumbs.crumbTrail.length >= 1) window.back();
+				}.bind(this)
+			});
+			if(objJson.links) this.interface.nodes.pass([this.interface.links(), objJson.links], this)();
+		}
+
+	}
+
+});
+	</script>
+</head>
+
+<body>
+<div id="zui"></div>
+</body>
+
+</html>
