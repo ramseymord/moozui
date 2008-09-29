@@ -7,69 +7,74 @@
 	<script type="text/javascript" src="assets/scripts/mootools-1.2-core.js"></script>
 	<script type="text/javascript" src="assets/scripts/mootools-1.2-more-color.js"></script>
 	<script type="text/javascript" src="assets/scripts/historymanager.js"></script>
-	<script type="text/javascript" src="assets/scripts/zui-lite.js"></script>
-	<link href="assets/styles/zui-lite.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="assets/scripts/moozui.js"></script>
 	<script type="text/javascript">
+var FakeDb = new Class( {
 	
-// This is a fake ZUI node database do not include this in your own projects
-ZUI.implement({
-
-	// just for fun pretend this is a database
-	'fakeNodes': [
-		{
-			'id': 1,
-			'title': 'Hey there!',
-			'content': 'This is neat',
-			'links': [
-				{'id': 2, 'title': 'Huh?'},
-				{'id': 3, 'title': 'What is this?', 'links': [{'id': 4, 'title': 'Who?'}]},
-				{'id': 4, 'title': 'Who?'}
-			]
-		},
-		{
-			'id': 2,
-			'title': 'Huh?',
-			'content': 'It\'s a ZUI.'
-		},
-		{
-			'id': 3,
-			'title': 'What is this?',
-			'content': 'It\'s a Javascript ZUI. Made by this one guy.',
-			'links': [{'id': 4, 'title': 'Who?'}]
-		},
-		{
-			'id': 4,
-			'title': 'Who?',
-			'content': 'Made by <a href="mailto:hansoksendahl@gmail.com">Hans Oksendahl</a><br/><br/><a href="http://thisisne.at">Thisisne.at</a>'
-		}
-	],
-
-	// pretend this is the onComplete function called from ZUI.remote.getContent
-	'remote': {
-
-		'getContent': function(intId)
-		{
-			objJson = $unlink( this.fakeNodes[intId - 1] );
-
-			this.interface.links().empty().adopt(this.interface.padding(objJson.title));
-			this.interface.content().empty().adopt(this.interface.padding(objJson.content));
-			this.interface.links().set('node', objJson.id);
-
-			this.interface.links().removeEvents( 'click' );
-			// set the click event for the top container node
-			this.interface.links().addEvents({
-				'click': function()
-				{
-					if(this.breadcrumbs.crumbTrail.length >= 1) window.back();
-				}.bind(this)
-			});
-			if(objJson.links) this.interface.nodes.pass([this.interface.links(), objJson.links], this)();
-		}
-
+	zoomLevel: 0,
+	
+	initialize: function( arrData )
+	{
+		
+	},
+	
+	query: function( intId )
+	{
+		
 	}
+	
+} );
 
-});
+MooZUI.RPC.getContent = function( intId )
+{
+	arrFakeData = {
+		1: {
+			id: 1,
+			title: 'MooZUI',
+			content: '<h1>It zooms!</h1>',
+			links: [{id: 2, title: 'What is it?', links:[{id: 3, title: 'Who made it?', links: [{id: 5, title: 'About the author'}, {id: 4, title: 'Projects'}]}]}]
+		},
+		2: {
+			id: 2,
+			title: 'What is it?',
+			content: 'It\'s a ZUI(Zooming User Interface) made using pure 100% JavaScript.<br/><br/>It uses the <a href="http://mootools.net">Mootools</a> JavaScript framework.',
+			links: [{id: 3, title: 'Who made it?', links: [{id: 5, title: 'About the author'}, {id: 5, title: 'Projects', links: [{id: 6, title: 'Aum'}, {id: 1, title: 'MooZUI'}]}]}]
+		},
+		3: {
+			id: 3,
+			title: 'Who made it?',
+			content: 'MooZUI was created by <a href="mailto:hansoksendahl@gmail.com">Hans Oksendahl</a>.<br/><br/>His website: <a href="http://thisisne.at">Thisisne.at</a><br/><br/>He has a few projects he\'s working on.',
+			links: [{id: 5, title: 'About the author'}, {id: 4, title: 'Projects', links: [{id: 6, title: 'Aum'}, {id: 1, title: 'MooZUI', links: [{id: 2, title: 'What is it?'}]}]}]
+		},
+		4: {
+			id: 4,
+			title: 'Projects',
+			content: 'These are the projects Hans is working on.',
+			links: [{id: 6, title: 'Aum'}, {id: 1, title: 'MooZUI', links: [{id: 2, title: 'What is it?', links: [{id: 3, title: 'Who made it?'}]}]}]
+		},
+		5: {
+			id: 5,
+			title: 'About the author',
+			content: 'If you want to learn more About the author the guy who made this and what he is trying to do with it you can visit any of the following links.',
+			links: []
+		},
+		6: {
+			id: 6,
+			title: 'Aum',
+			content: 'Aum is a Ruby framework not as slick as Ruby on Rails.  And not as small as Camping.  But it\'s got that special something.',
+			links: []
+		}
+	};
+	
+	this.Interface.links().set( 'html' );
+	this.Interface.links().set( 'node', intId );
+	this.Interface.links().adopt( this.Interface.padding( arrFakeData[ intId ].title ) );
+	this.Interface.content().set( 'html', '' );
+	this.Interface.content().adopt( this.Interface.padding( arrFakeData[ intId ].content ) );
+	this.Interface.nodes.bind( this, [ this.Interface.links(), arrFakeData[ intId ].links ] )();
+}
 	</script>
+	<link href="assets/styles/moozui.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

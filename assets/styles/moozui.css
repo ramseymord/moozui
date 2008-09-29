@@ -29,6 +29,7 @@ body, html
 	font-size: 4em;
 	height: 100%;
 	left: 0;
+	overflow: none;
 	position: absolute;
 	top: 0;
 	width: 50%;
